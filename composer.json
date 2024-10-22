@@ -1,0 +1,54 @@
+{
+  "name": "kmi/typo3-todo-list",
+  "type": "typo3-cms-extension",
+  "description": "",
+  "require": {
+    "php": "^8.3",
+    "typo3/cms-core": "^13.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "Kmi\\Typo3TodoList\\": "Classes"
+    }
+  },
+  "require-dev": {
+    "roave/security-advisories": "dev-latest",
+    "typo3/cms-base-distribution": "^13.0",
+    "typo3/cms-lowlevel": "^13.0",
+    "friendsofphp/php-cs-fixer": "^v3.64",
+    "saschaegerer/phpstan-typo3": "^1.10",
+    "symfony/translation": "^6.3 || ^7.0"
+  },
+  "extra": {
+    "typo3/cms": {
+      "cms-package-dir": "{$vendor-dir}/typo3/cms",
+      "web-dir": "public",
+      "extension-key": "typo3_todo_list"
+    }
+  },
+  "config": {
+    "allow-plugins": {
+      "typo3/class-alias-loader": true,
+      "typo3/cms-composer-installers": true
+    }
+  },
+  "license": [
+    "GPL-2.0-or-later"
+  ],
+  "authors": [
+    {
+      "name": "Konrad Michalik",
+      "email": "hej@konradmichalik.dev",
+      "role": "Developer"
+    }
+  ],
+  "keywords": [
+    "TYPO3"
+  ],
+  "scripts": {
+    "php:lint": "find *.php . -name '*.php' ! -path './vendor/*'  ! -path './var/*' ! -path '*node_modules/*' -print0 | xargs -0 -n 1 -P 4 php -l",
+    "php:fixer": "php vendor/bin/php-cs-fixer --config=php-cs-fixer.php fix",
+    "php:stan": "php vendor/bin/phpstan --generate-baseline=phpstan-baseline.neon --allow-empty-baseline",
+    "xml:lint": "find . -name '*.xlf' ! -path './vendor/*' ! -path './var/*' | xargs -r xmllint --schema vendor/symfony/translation/Resources/schemas/xliff-core-1.2-transitional.xsd --noout"
+  }
+}
