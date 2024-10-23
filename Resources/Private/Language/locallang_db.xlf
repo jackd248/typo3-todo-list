@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="2024-10-22T18:00:00Z" product-name="typo3_todo_list">
+		<body>
+			<trans-unit id="tx_typo3todolist_domain_model_task">
+				<source>Task</source>
+			</trans-unit>
+			<trans-unit id="tx_typo3todolist_domain_model_task.title">
+				<source>Title</source>
+			</trans-unit>
+			<trans-unit id="tx_typo3todolist_domain_model_task.description">
+				<source>Description</source>
+			</trans-unit>
+			<trans-unit id="tx_typo3todolist_domain_model_task.due_date">
+				<source>Due date</source>
+			</trans-unit>
+			<trans-unit id="tx_typo3todolist_domain_model_task.completed">
+				<source>Completed</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>
