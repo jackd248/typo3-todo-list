@@ -1,8 +1,9 @@
 .idea
-config
+#config
 composer.lock
 public
 !Resources/Public
+Resources/Public/JavaScript
 vendor
 var
 Documentation-*

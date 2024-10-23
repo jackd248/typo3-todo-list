@@ -1,0 +1,2 @@
+@import 'EXT:typo3_todo_list/Configuration/Sets/SitePackage/TypoScript/Setup/config.typoscript'
+@import 'EXT:typo3_todo_list/Configuration/Sets/SitePackage/TypoScript/Setup/page.typoscript'
