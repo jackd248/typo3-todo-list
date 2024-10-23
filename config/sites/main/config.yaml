@@ -12,3 +12,5 @@ languages:
     flag: us
 rootPageId: 1
 websiteTitle: 'TYPO3 ToDo List'
+imports:
+  - { resource: "EXT:t3api/Configuration/Routing/config.yaml" }

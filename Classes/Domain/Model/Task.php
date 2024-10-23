@@ -4,9 +4,42 @@ declare(strict_types=1);
 
 namespace Kmi\Typo3TodoList\Domain\Model;
 
+use SourceBroker\T3api\Annotation\ApiResource;
 use TYPO3\CMS\Extbase\Annotation\Validate;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 
+/**
+ * @ApiResource(
+ *     collectionOperations={
+ *         "get": {
+ *             "path": "/tasks",
+ *         },
+ *         "post": {
+ *             "path": "/tasks",
+ *             "method": "POST",
+ *         },
+ *     },
+ *     itemOperations={
+ *         "get": {
+ *             "path": "/tasks/{id}",
+ *         },
+ *         "patch": {
+ *             "path": "/tasks/{id}",
+ *             "method": "PATCH",
+ *         },
+ *         "delete": {
+ *             "path": "/tasks/{id}",
+ *             "method": "DELETE",
+ *         }
+ *     },
+ *     attributes={
+ *         "persistence": {
+ *             "storagePid"="2",
+ *              "recursive"=1
+ *         }
+ *     }
+ * )
+ */
 class Task extends AbstractEntity
 {
     #[Validate([
@@ -17,6 +50,14 @@ class Task extends AbstractEntity
     protected string $description = '';
     protected ?\DateTime $dueDate = null;
     protected bool $completed = false;
+
+    /**
+     * @var int|null
+     * Workaround, because of the following error:
+     * Expected argument of type \"int\", \"null\" given at property path \"pid\".
+     * Why is the property metadata not checking that the type is nullable?
+     */
+    protected ?int $pid = 2;
 
     public function getTitle(): string
     {

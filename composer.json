@@ -4,7 +4,8 @@
   "description": "",
   "require": {
     "php": "^8.3",
-    "typo3/cms-core": "^13.0"
+    "typo3/cms-core": "^13.0",
+    "sourcebroker/t3api": "^4.0"
   },
   "autoload": {
     "psr-4": {
