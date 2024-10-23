@@ -57,5 +57,4 @@ class Task extends AbstractEntity
     {
         $this->completed = $completed;
     }
-
 }

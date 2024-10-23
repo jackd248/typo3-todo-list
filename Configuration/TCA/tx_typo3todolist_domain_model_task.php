@@ -45,8 +45,8 @@ return [
                 'type' => 'input',
                 'renderType' => 'inputDateTime',
                 'eval' => 'datetime,int',
-                'default' => 0
-            ]
+                'default' => 0,
+            ],
         ],
         'completed' => [
             'label' => 'LLL:EXT:typo3_todo_list/Resources/Private/Language/locallang_db.xlf:tx_typo3todolist_domain_model_task.completed',
