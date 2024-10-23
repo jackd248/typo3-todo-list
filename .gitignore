@@ -4,6 +4,7 @@ composer.lock
 public
 !Resources/Public
 Resources/Public/JavaScript
+Resources/Public/Css
 vendor
 var
 Documentation-*
