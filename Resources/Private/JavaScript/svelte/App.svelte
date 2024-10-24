@@ -12,6 +12,7 @@
     let snackbar = false;
     let offline = false;
     let loading = true;
+    let darkMode = false;
     let list = true;
     let tasks = [];
 
@@ -30,6 +31,11 @@
         window.addEventListener('online', () => {
             offline = false;
         });
+
+        darkMode = localStorage.getItem('darkMode') === 'true';
+        if (darkMode) {
+            document.body.classList.add('dark');
+        }
 
         if (tasks.length === 0) {
             handleNew();
@@ -83,9 +89,11 @@
         if (dark) {
             document.body.classList.remove('dark');
             event.target.querySelector('i').textContent = 'dark_mode';
+            localStorage.setItem('darkMode', 'false');
         } else {
             event.target.querySelector('i').textContent = 'light_mode';
             document.body.classList.add('dark');
+            localStorage.setItem('darkMode', 'true');
         }
     }
 </script>
@@ -142,7 +150,7 @@
             <h3><strong>TYPO3</strong> <em>ToDo</em> List</h3>
         </div>
         <button class="border" on:click={toggleDarkMode}>
-            <i>dark_mode</i>
+            <i>{#if darkMode }light_mode{:else}dark_mode{/if}</i>
         </button>
     </div>
 </header>
@@ -193,5 +201,5 @@
 
 <div class="large-space"></div>
 <div class="padding absolute center">
-    Made with <i>favorite</i> by <a href="https://konradmichalik.dev" target="_blank" class="link">Konrad Michalik</a>
+    Made with <i>keyboard</i> & <i>favorite</i> by <a href="https://konradmichalik.dev" target="_blank" class="link">Konrad Michalik</a>
 </div>

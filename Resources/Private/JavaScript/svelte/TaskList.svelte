@@ -26,11 +26,23 @@
         const threshold = 24 * 60 * 60 * 1000;
 
         if (date - now < threshold && date - now > 0) {
-            return 'primary';
+            return {
+                class: 'primary',
+                message: 'Due the next 24 hours',
+                icon: 'warning'
+            }
         } else if (date < now) {
-            return 'secondary';
+            return {
+                class: 'secondary',
+                message: 'Overdue',
+                icon: 'error'
+            }
         } else {
-            return '';
+            return {
+                class: '',
+                message: 'Upcoming',
+                icon: 'calendar_month'
+            }
         }
     }
 
@@ -68,17 +80,12 @@
                 <div>{task.description}</div>
             </div>
             {#if task.dueDate}
-                <div class="chip {checkDate(task.dueDate)}">
+                <div class="chip {checkDate(task.dueDate).class}">
                     <i>
-                        {#if checkDate(task.dueDate) === 'primary'}
-                            warning
-                        {:else if checkDate(task.dueDate) === 'secondary'}
-                            error
-                        {:else}
-                            calendar_month
-                        {/if}
+                        {checkDate(task.dueDate).icon}
                     </i>
                     <small>{formatDate(task.dueDate)}</small>
+                    <div class="tooltip">{checkDate(task.dueDate).message}</div>
                 </div>
             {/if}
             <nav class="no-space">

@@ -77,7 +77,7 @@
         </div>
 
         <label class="checkbox">
-            <input type="checkbox" name="completed" bind:value={completed}>
+            <input type="checkbox" name="completed" bind:checked={completed}>
             <span>Completed</span>
         </label>
 
