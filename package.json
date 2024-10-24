@@ -4,23 +4,27 @@
 		"node": ">=20.0.0 <21.0.0"
 	},
 	"dependencies": {
-    "beercss": "^3.7.10"
-  },
-  "devDependencies": {
-    "autoprefixer": "^10.4.20",
-    "cssnano": "^7.0.6",
-    "esbuild": "^0.24.0",
-    "npm-run-all": "^4.1.5",
-    "postcss": "^8.4.47",
-    "postcss-cli": "^11.0.0",
-    "postcss-import": "^16.1.0"
-  },
-  "scripts": {
-    "watch": "npm-run-all -p style:watch es:watch",
-    "build": "npm-run-all -s style:build es:build",
-    "style:watch": "postcss Resources/Private/Css/App.css -o Resources/Public/Css/App.css -w --verbose",
-    "style:build": "postcss --env='production' Resources/Private/Css/App.css -o Resources/Public/Css/App.min.css",
-    "es:watch": "node esbuild.config.mjs --watch",
-    "es:build": "node esbuild.config.mjs --build"
-  }
+		"beercss": "^3.7.10",
+		"material-dynamic-colors": "^1.1.2",
+		"svelte": "^5.1.0",
+		"svelte-preprocess": "^6.0.3"
+	},
+	"devDependencies": {
+		"autoprefixer": "^10.4.20",
+		"cssnano": "^7.0.6",
+		"esbuild": "^0.24.0",
+		"esbuild-svelte": "^0.8.2",
+		"npm-run-all": "^4.1.5",
+		"postcss": "^8.4.47",
+		"postcss-cli": "^11.0.0",
+		"postcss-import": "^16.1.0"
+	},
+	"scripts": {
+		"watch": "npm-run-all -p style:watch es:watch",
+		"build": "npm-run-all -s style:build es:build",
+		"style:watch": "postcss Resources/Private/Css/App.css -o Resources/Public/Css/App.css -w --verbose",
+		"style:build": "postcss --env='production' Resources/Private/Css/App.css -o Resources/Public/Css/App.min.css",
+		"es:watch": "node esbuild.config.mjs --watch",
+		"es:build": "node esbuild.config.mjs --build"
+	}
 }

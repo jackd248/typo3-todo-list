@@ -1,4 +1,6 @@
 import * as esbuild from 'esbuild'
+import esbuildSvelte from "esbuild-svelte";
+import sveltePreprocess from "svelte-preprocess";
 
 let devMode = true;
 
@@ -9,14 +11,32 @@ const ignoreWarnings = new Set([
 
 const buildConfig = {
     entryPoints: [
-        './Resources/Private/JavaScript/App.js',
+        './Resources/Private/JavaScript/App.ts',
     ],
-    mainFields: ["browser", "module", "main"],
-    conditions: ["browser"],
+    mainFields: ["svelte", "browser", "module", "main"],
+    conditions: ["svelte", "browser"],
     format: `esm`,
     bundle: true,
     sourcemap: true,
-    plugins: [],
+    plugins: [
+        esbuildSvelte({
+            preprocess: sveltePreprocess(
+                {
+                    scss: { renderSync: true, includePaths: ['assets', 'node_modules'] },
+                }
+            ),
+            compilerOptions: {
+                dev: devMode,
+                customElement: true
+            },
+            filterWarnings(warning) {
+                if (ignoreWarnings.has(warning.code)) {
+                    return false
+                }
+            }
+        }),
+    ],
+
     outdir: 'Resources/Public/JavaScript/',
     logLevel: 'info',
 }

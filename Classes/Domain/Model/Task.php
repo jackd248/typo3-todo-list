@@ -4,60 +4,92 @@ declare(strict_types=1);
 
 namespace Kmi\Typo3TodoList\Domain\Model;
 
-use SourceBroker\T3api\Annotation\ApiResource;
+use SourceBroker\T3api\Annotation as T3api;
 use TYPO3\CMS\Extbase\Annotation\Validate;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 
 /**
- * @ApiResource(
+ * @T3api\ApiResource(
  *     collectionOperations={
  *         "get": {
+ *             "method": "GET",
  *             "path": "/tasks",
+ *             "normalizationContext": {
+ *                 "groups": {"api_item_task"}
+ *             },
  *         },
  *         "post": {
  *             "path": "/tasks",
  *             "method": "POST",
+ *             "normalizationContext": {
+ *                 "groups": {"api_item_task"}
+ *             },
  *         },
  *     },
  *     itemOperations={
  *         "get": {
+ *             "method": "GET",
  *             "path": "/tasks/{id}",
+ *             "normalizationContext": {
+ *                 "groups": {"api_item_task"}
+ *             },
  *         },
  *         "patch": {
  *             "path": "/tasks/{id}",
  *             "method": "PATCH",
+ *             "normalizationContext": {
+ *                 "groups": {"api_item_task"}
+ *             },
  *         },
  *         "delete": {
  *             "path": "/tasks/{id}",
  *             "method": "DELETE",
+ *             "normalizationContext": {
+ *                 "groups": {"api_item_task"}
+ *             },
  *         }
  *     },
  *     attributes={
  *         "persistence": {
- *             "storagePid"="2",
- *              "recursive"=1
+ *             "storagePid": "2",
+ *             "recursive": 1
  *         }
  *     }
  * )
  */
 class Task extends AbstractEntity
 {
+    /**
+     * @T3api\Serializer\Groups({
+     *     "api_item_task",
+     * })
+     * */
     #[Validate([
         'validator' => 'StringLength',
         'options' => ['minimum' => 1, 'maximum' => 255],
     ])]
     protected string $title = '';
-    protected string $description = '';
-    protected ?\DateTime $dueDate = null;
-    protected bool $completed = false;
 
     /**
-     * @var int|null
-     * Workaround, because of the following error:
-     * Expected argument of type \"int\", \"null\" given at property path \"pid\".
-     * Why is the property metadata not checking that the type is nullable?
-     */
-    protected ?int $pid = 2;
+     * @T3api\Serializer\Groups({
+     *     "api_item_task",
+     * })
+     * */
+    protected string $description = '';
+
+    /**
+     * @T3api\Serializer\Groups({
+     *     "api_item_task",
+     * })
+     * */
+    protected ?\DateTime $dueDate = null;
+
+    /**
+     * @T3api\Serializer\Groups({
+     *     "api_item_task",
+     * })
+     * */
+    protected bool $completed = false;
 
     public function getTitle(): string
     {

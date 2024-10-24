@@ -9,7 +9,7 @@ page {
 	}
 
 	10 = TEXT
-	10.value = <main class="responsive"></main>
+	10.value = <main class="responsive"><app-container /></main>
 
 	includeCSS {
 		app = EXT:typo3_todo_list/Resources/Public/Css/App.min.css
@@ -17,6 +17,7 @@ page {
 
 	includeJS {
 		app = EXT:typo3_todo_list/Resources/Public/JavaScript/App.min.js
+		app.type = module
 	}
 }
 
