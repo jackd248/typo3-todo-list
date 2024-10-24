@@ -6,7 +6,6 @@
     import TaskList from './TaskList.svelte';
     import {setCustomElementStyles} from "../utils/Helper";
     import ApiClient from './../utils/ApiClient.ts';
-    import materialDynamicColors from "material-dynamic-colors/src/cdn/material-dynamic-colors";
 
     let task = null;
     let toast = '';
@@ -50,10 +49,7 @@
 
         // Sort tasks by completed status and due date
         tasks = tasks.sort((a, b) => {
-            if (a.completed !== b.completed) {
-                return a.completed - b.completed;
-            }
-            return new Date(a.dueDate) - new Date(b.dueDate);
+            return a.completed - b.completed;
         });
         task = null;
         list = true;
@@ -120,6 +116,12 @@
     .hidden {
         display: none !important;
     }
+
+    @media (max-width: 1024px) {
+        header {
+            margin-top: 5rem;
+        }
+    }
 </style>
 
 <header>
@@ -164,7 +166,7 @@
     </button>
 </div>
 
-<a href="/typo3" class="border circle right-round bottom-round extra typo3 tertiary">
+<a href="/typo3/module/web/list?id=2" class="border circle right-round bottom-round extra typo3 tertiary">
     <i>login</i>
 </a>
 

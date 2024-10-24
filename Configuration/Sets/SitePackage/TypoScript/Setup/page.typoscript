@@ -1,6 +1,8 @@
 page = PAGE
 page {
 	typeNum = 0
+	shortcutIcon = EXT:typo3_todo_list/Resources/Public/Icons/Extension.svg
+
 
 	meta {
 		X-UA-Compatible = ie=edge

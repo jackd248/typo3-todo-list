@@ -42,6 +42,15 @@
     }
 </script>
 
+<style>
+    @media (max-width: 1024px) {
+        .row {
+            flex-direction: column;
+            align-items: center;
+        }
+    }
+</style>
+
 <div class="list">
     {#each tasks as task}
         <div class="space"></div>
