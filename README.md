@@ -34,3 +34,36 @@
 - **PWA (optional)**:
     - Enable the app to be stored offline on mobile devices.
     - Allow users to **view, edit, and delete tasks** even without internet access.
+
+## Technologies
+
+- **Frontend**:
+  - beercss
+  - svelte
+- **Backend**:
+  - TYPO3: v13
+  - Extension:
+    - t3api
+
+## Code Quality
+
+```shell
+ddev composer php:lint
+ddev composer php:fixer
+ddev composer php:stan
+ddev composer xml:lint
+```
+
+## Tests
+
+- playwright
+  - frontend
+  - api
+
+```shell
+ddev npm run test:install
+```
+
+```shell
+ddev npm run test
+```

@@ -57,13 +57,13 @@
             <div class="max">
                 <label>Title<span class="primary-text">*</span></label>
                 <div class="field border">
-                    <input type="text" required bind:value={title}/>
+                    <input type="text" name="title" required bind:value={title}/>
                 </div>
             </div>
             <div class="max">
                 <label>Due Date</label>
                 <div class="field border">
-                    <input type="datetime-local" bind:value={dueDate}/>
+                    <input type="datetime-local" name="dueDate" bind:value={dueDate}/>
                 </div>
             </div>
         </div>
@@ -71,13 +71,13 @@
             <div class="max">
                 <label>Description</label>
                 <div class="field border textarea">
-                    <textarea bind:value={description}></textarea>
+                    <textarea  name="description" bind:value={description}></textarea>
                 </div>
             </div>
         </div>
 
         <label class="checkbox">
-            <input type="checkbox" bind:value={completed}>
+            <input type="checkbox" name="completed" bind:value={completed}>
             <span>Completed</span>
         </label>
 

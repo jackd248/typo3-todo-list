@@ -117,9 +117,21 @@
         display: none !important;
     }
 
-    @media (max-width: 1024px) {
+    @media (max-width: 1300px) and (min-width: 600px) {
+        header .row {
+            margin-left: 5rem !important;
+        }
+        header .max {
+            flex: none;
+        }
+    }
+
+    @media (max-width: 600px) {
         header {
             margin-top: 5rem;
+        }
+        header .max {
+            flex: none;
         }
     }
 </style>
@@ -139,6 +151,15 @@
 {#if loading}
     <div class="center-align">
         <progress class="circle"></progress>
+    </div>
+{/if}
+
+{#if tasks.length === 0 && !loading && list}
+    <div class="center-align">
+        <button class="border" on:click={handleNew}>
+            <i>add</i>
+            <span>Create a task</span>
+        </button>
     </div>
 {/if}
 

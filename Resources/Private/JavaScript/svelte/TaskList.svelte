@@ -54,7 +54,7 @@
 <div class="list">
     {#each tasks as task}
         <div class="space"></div>
-        <div class="row padding surface-container {task.completed ? 'fill' : ''}">
+        <div class="row padding surface-container task-item {task.completed ? 'fill' : ''}">
             <button class="border circle left-round bottom-round {task.completed ? 'primary' : ''}"
                     on:click={toggleCompleted(task)}>
                 {#if task.completed }
@@ -82,10 +82,10 @@
                 </div>
             {/if}
             <nav class="no-space">
-                <button on:click={editTask(task)} class="border left-round small">
+                <button on:click={editTask(task)} class="border left-round small edit-task">
                     <i>edit</i>
                 </button>
-                <button on:click={deleteTask(task)} class="border right-round small fill">
+                <button on:click={deleteTask(task)} class="border right-round small fill delete-task">
                     <i>delete</i>
                 </button>
             </nav>

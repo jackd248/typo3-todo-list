@@ -24,6 +24,8 @@
 		"style:watch": "postcss Resources/Private/Css/App.css -o Resources/Public/Css/App.css -w --verbose",
 		"style:build": "postcss --env='production' Resources/Private/Css/App.css -o Resources/Public/Css/App.min.css",
 		"es:watch": "node esbuild.config.mjs --watch",
-		"es:build": "node esbuild.config.mjs --build"
+		"es:build": "node esbuild.config.mjs --build",
+		"test": "cd Tests && npx playwright test",
+		"test:install": "cd Tests && npm ci && npx playwright install"
 	}
 }
