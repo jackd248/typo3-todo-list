@@ -8,32 +8,45 @@
 
 </div>
 
+This extension provides a simple todo list application for TYPO3.
+
+![Preview](./Documentation/Preview.png)
+
 ## Task
 
-- **Create a task management application (To-do list)**
-    - **Display tasks** when the user opens the app.
-    - If **no tasks** are available, show a form to **add new tasks**.
-    - User can create new tasks **throughout the app**.
-    - A task includes:
-        - **Title (mandatory)**
-        - **Description (optional)**
-        - **Due date (optional)**
-    - **Highlight tasks** that are close to or past the due date.
+#### 1. **Core Features**
+- [x] Display tasks (if tasks are present)
+- [x] Show a form to add new tasks if no tasks are available
+- [x] Allow the creation of new tasks at any time
+- [x] Task structure:
+    - **Title** (required)
+    - Description (optional)
+    - Due date (optional)
+- [x] Highlight tasks that are nearing or past their due date
+- [x] Enable editing, completing, and deleting tasks
 
-- **User features**:
-    - Edit tasks.
-    - Mark tasks as completed.
-    - Delete tasks.
+#### 2. **User Experience**
+- [x] Ensure intuitive and easy-to-use interface
+- [x] Consistent and appealing UI design
+- [x] Recognizable and cross-platform interface design
 
-- **UI/UX**:
-    - Design should be **intuitive** and **user-friendly**.
-    - Use **frameworks** or custom design for a **clear and consistent interface**.
-    - Ensure **cross-platform compatibility** with modern technologies.
-    - Implement **tests** to maintain code quality.
+#### 3. **Technical Considerations**
+- [ ] Use modern technical approaches for cross-platform reusability
+- [ ] Implement frameworks or custom designs for UI and UX
+- [ ] Use tests to ensure code quality
 
-- **PWA (optional)**:
-    - Enable the app to be stored offline on mobile devices.
-    - Allow users to **view, edit, and delete tasks** even without internet access.
+#### 4. **PWA (Optional)**
+- [ ] Support offline functionality (viewing, editing, and deleting tasks)
+- [ ] Option to save the application as a Progressive Web App (PWA)
+
+#### 5. **Additional Notes**
+- [ ] Focus on a user-friendly and maintainable codebase
+
+## Install
+
+```shell
+ddev start
+```
 
 ## Technologies
 

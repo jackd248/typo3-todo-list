@@ -18,7 +18,7 @@ web_environment:
 hooks:
   post-start:
     - exec: composer install --ignore-platform-reqs
-    - exec: if [ ! -d /var/www/html/node_modules ]; then npm ci && echo "To build assets (JS/CSS) Run npm start."; fi
+    - exec: if [ ! -d /var/www/html/node_modules ]; then npm ci && echo "Run npm run build."; fi
 
 # Key features of ddev's config.yaml:
 
