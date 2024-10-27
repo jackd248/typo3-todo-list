@@ -18,7 +18,7 @@ test('can create a task', async ({page}) => {
     await page.click('button[type="submit"]');
 
     await expect(page.locator('text=' + title)).toHaveText(title);
-    await expect(page.locator('.snackbar')).toHaveText(/Task updated/, { timeout: 5000 });
+    await expect(page.locator('.snackbar')).toHaveText(/New task created/, { timeout: 5000 });
 });
 
 test('can list all tasks', async ({page}) => {
