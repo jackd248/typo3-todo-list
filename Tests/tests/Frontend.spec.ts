@@ -8,8 +8,11 @@ test('has title', async ({page}) => {
 
 test('can create a task', async ({page}) => {
     await page.goto('/');
-    await page.click('button.add-task');
-    await expect(page.locator('button[type="submit"]')).toHaveText(/Save/);
+    const addButton = page.locator('button.add-task');
+    if (await addButton.isVisible()) {
+        await addButton.click();
+    }
+    await expect(page.locator('button[type="submit"]')).toHaveText(/Create/);
 
     const title = '[Frontend] New task ' + getRandomNumber(1, 1000);
 

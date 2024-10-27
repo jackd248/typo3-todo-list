@@ -33,6 +33,6 @@
 		"es:lint": "npx eslint --config eslint.config.mjs Resources/Private/JavaScript",
 		"cp:font": "cp -r node_modules/beercss/dist/cdn/material-symbols-* Resources/Public/Css",
 		"test": "cd Tests && npx playwright test",
-		"test:install": "cd Tests && npm ci && npx playwright install"
+		"test:install": "cd Tests && npm ci && npx playwright install && npx playwright install-deps"
 	}
 }
