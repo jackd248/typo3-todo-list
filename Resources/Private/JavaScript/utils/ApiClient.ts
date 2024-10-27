@@ -1,15 +1,22 @@
+interface Task {
+    uid?: number;
+    title: string;
+    description: string;
+    completed: boolean;
+}
+
 class ApiClient {
     private apiUrl = '/_api/tasks'
 
     async getTasks() {
-        return this.fetchData(this.apiUrl, 'GET')
+        return await this.fetchData(this.apiUrl, 'GET')
     }
 
-    async createTask(task: any) {
+    async createTask(task: Task) {
         return this.fetchData(this.apiUrl, 'POST', task)
     }
 
-    async updateTask(taskId: number, updatedTask: any) {
+    async updateTask(taskId: number, updatedTask: Task) {
         return this.fetchData(`${this.apiUrl}/${taskId}`, 'PATCH', updatedTask)
     }
 
@@ -17,7 +24,7 @@ class ApiClient {
         return this.fetchData(`${this.apiUrl}/${taskId}`, 'DELETE')
     }
 
-    private async fetchData(url: string, method: string, body?: any) {
+    private async fetchData(url: string, method: string, body?: Task) {
         try {
             const response = await fetch(url, {
                 method,

@@ -1,0 +1,27 @@
+{
+  "compilerOptions": {
+    "noImplicitAny": true,
+    "inlineSourceMap": true,
+    "inlineSources": true,
+    "module": "es6",
+    "target": "es6",
+    "allowJs": true,
+    "moduleResolution": "node",
+    "strictNullChecks": true,
+    "lib": ["es2017", "dom"],
+    "rootDir": "./",
+
+  },
+  "exclude": [
+    "./node_modules",
+    "./public",
+    "./var",
+    "./vendor",
+    "./**/*.js",
+    "./**/*.mjs"
+  ],
+  "include": [
+    "./Resources/Private/JavaScript/**/*.ts",
+    "./Resources/Private/JavaScript/**/*.svelte"
+  ]
+}

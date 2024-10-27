@@ -1,56 +1,36 @@
 <script>
-    import {createEventDispatcher} from 'svelte';
-    import ApiClient from './../utils/ApiClient.js';
+    let {task = $bindable(), toast = $bindable(), tasks = $bindable(), ...props} = $props();
 
+    import {formatDate, checkDate, sortTasks} from '../utils/Helper';
+    import ApiClient from './../utils/ApiClient.ts';
+    import Logger from './../utils/Logger.ts';
 
-    const dispatch = createEventDispatcher();
-    export let tasks;
+    const classname = 'TaskList';
 
-    function editTask(task) {
-        dispatch('editTask', task);
+    function editTask(taskToEdit) {
+        task = taskToEdit
     }
 
-    async function deleteTask(task) {
-        await ApiClient.deleteTask(task.uid);
-        tasks = tasks.filter(t => t.uid !== task.uid);
-        dispatch('toast', 'Task deleted');
-    }
-
-    function formatDate(dateString) {
-        return new Date(dateString).toLocaleString();
-    }
-
-    function checkDate(dateString) {
-        const date = new Date(dateString);
-        const now = new Date();
-        const threshold = 24 * 60 * 60 * 1000;
-
-        if (date - now < threshold && date - now > 0) {
-            return {
-                class: 'primary',
-                message: 'Due the next 24 hours',
-                icon: 'warning'
+    async function deleteTask(taskToDelete) {
+        await ApiClient.deleteTask(taskToDelete.uid).then(() => {
+            Logger.debug('Task deleted', classname, taskToDelete);
+            tasks = tasks.filter(t => t.uid !== taskToDelete.uid);
+            toast = 'Task deleted';
+            if (tasks.length === 0) {
+                task = {}
             }
-        } else if (date < now) {
-            return {
-                class: 'secondary',
-                message: 'Overdue',
-                icon: 'error'
-            }
-        } else {
-            return {
-                class: '',
-                message: 'Upcoming',
-                icon: 'calendar_month'
-            }
-        }
+        })
+
     }
 
-    function toggleCompleted(task) {
-        task.completed = !task.completed;
-        ApiClient.updateTask(task.uid, task);
-        tasks = tasks.map(t => t.uid === task.uid ? task : t);
-        dispatch('toast', 'Task updated');
+    function toggleCompleted(taskToUpdate) {
+        taskToUpdate.completed = !taskToUpdate.completed;
+        ApiClient.updateTask(taskToUpdate.uid, taskToUpdate).then(result => {
+            Logger.debug('Task updated', classname, result);
+            tasks = tasks.map(t => t.uid === result.uid ? result : t);
+            sortTasks(tasks)
+            toast = 'Task updated';
+        })
     }
 </script>
 
@@ -66,14 +46,11 @@
 <div class="list">
     {#each tasks as task}
         <div class="space"></div>
-        <div class="row padding surface-container task-item {task.completed ? 'fill' : ''}">
+        <div id="task-{task.uid}" class="row padding surface-container task-item {task.completed ? 'fill' : ''}">
             <button class="border circle left-round bottom-round {task.completed ? 'primary' : ''}"
-                    on:click={toggleCompleted(task)}>
-                {#if task.completed }
-                    <i>check_box</i>
-                {:else}
-                    <i>check_box_outline_blank</i>
-                {/if}
+                    onclick={() => toggleCompleted(task)}>
+                <i>{task.completed ? 'check_box' : 'check_box_outline_blank'}</i>
+                <div class="tooltip">{task.completed ? 'Mark as incomplete' : 'Mark as complete'}</div>
             </button>
             <div class="max">
                 <h5 class="small">{task.title}</h5>
@@ -81,19 +58,19 @@
             </div>
             {#if task.dueDate}
                 <div class="chip {checkDate(task.dueDate).class}">
-                    <i>
-                        {checkDate(task.dueDate).icon}
-                    </i>
+                    <i>{checkDate(task.dueDate).icon}</i>
                     <small>{formatDate(task.dueDate)}</small>
-                    <div class="tooltip">{checkDate(task.dueDate).message}</div>
+                    <span class="tooltip">{checkDate(task.dueDate).message}</span>
                 </div>
             {/if}
             <nav class="no-space">
-                <button on:click={editTask(task)} class="border left-round small edit-task">
+                <button onclick={() => editTask(task)} class="border left-round small edit-task">
                     <i>edit</i>
+                    <span class="tooltip">Edit task</span>
                 </button>
-                <button on:click={deleteTask(task)} class="border right-round small fill delete-task">
+                <button onclick={() => deleteTask(task)} class="border right-round small fill delete-task">
                     <i>delete</i>
+                    <span class="tooltip">Delete task</span>
                 </button>
             </nav>
         </div>
