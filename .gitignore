@@ -1,5 +1,5 @@
 .idea
-#config
+config/system
 composer.lock
 public
 !Resources/Public
