@@ -1,9 +1,7 @@
 <?php
-
 return [
     'BE' => [
-        'debug' => true,
-        'installToolPassword' => '$argon2i$v=19$m=65536,t=16,p=1$cVNFR3RVUURiV1FTOUdEVA$huJG7wqI20BF5BgWTUGWswXbi7UY1hTLb1k9pt5BcbU',
+        'debug' => false,
         'passwordHashing' => [
             'className' => 'TYPO3\\CMS\\Core\\Crypto\\PasswordHashing\\Argon2iPasswordHash',
             'options' => [],
@@ -12,17 +10,8 @@ return [
     'DB' => [
         'Connections' => [
             'Default' => [
-                'charset' => 'utf8mb4',
-                'dbname' => 'db',
-                'defaultTableOptions' => [
-                    'charset' => 'utf8mb4',
-                    'collation' => 'utf8mb4_unicode_ci',
-                ],
+                'charset' => 'utf8',
                 'driver' => 'mysqli',
-                'host' => 'db',
-                'password' => 'db',
-                'port' => 3306,
-                'user' => 'db',
             ],
         ],
     ],
@@ -45,7 +34,7 @@ return [
         'cacheHash' => [
             'enforceValidation' => true,
         ],
-        'debug' => true,
+        'debug' => false,
         'disableNoCacheParameter' => true,
         'passwordHashing' => [
             'className' => 'TYPO3\\CMS\\Core\\Crypto\\PasswordHashing\\Argon2iPasswordHash',
@@ -65,7 +54,7 @@ return [
                     'writerConfiguration' => [
                         'notice' => [
                             'TYPO3\CMS\Core\Log\Writer\FileWriter' => [
-                                'disabled' => false,
+                                'disabled' => true,
                             ],
                         ],
                     ],
@@ -102,17 +91,13 @@ return [
                 ],
             ],
         ],
-        'devIPmask' => '*',
-        'displayErrors' => 1,
-        'encryptionKey' => '01109cf79b0aa195328a51e5acf75f42ce784491b6196505be8a78e8a35cd5e7a658e8885283fb3de4dbaad2bff0cabe',
-        'exceptionalErrors' => 12290,
+        'devIPmask' => '',
+        'displayErrors' => 0,
+        'encryptionKey' => '5ea2ee772c6106cd1ee6141301c215ca10c2ecc89ec308f0061dae4fd71420f40d91271aa902342c987fc48ba9ae451a',
+        'exceptionalErrors' => 4096,
         'features' => [
             'frontend.cache.autoTagging' => true,
         ],
-        'sitename' => 'TYPO3 ToDo List',
-        'systemMaintainers' => [
-            1,
-        ],
-        'trustedHostsPattern' => '.*',
+        'sitename' => 'New TYPO3 site',
     ],
 ];

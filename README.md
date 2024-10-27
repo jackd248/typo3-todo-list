@@ -44,19 +44,59 @@ This extension provides a simple todo list application for TYPO3.
 
 ## Install
 
+The project uses [ddev](https://ddev.readthedocs.io/en/stable/) for local development.
+
+Start the ddev container:
+
 ```shell
 ddev start
 ```
 
+Launch the application:
+
+```shell
+ddev launch
+```
+
+> Default credentials for TYPO3 backend:
+>
+> User: `admin`, password: `Password1!`
+
 ## Technologies
 
+The application uses the following basis technologies:
+
 - **Frontend**:
-  - beercss
-  - svelte
+  - [beercss](https://www.beercss.com/)
+  - [svelte](https://svelte.dev/)
 - **Backend**:
-  - TYPO3: v13
-  - Extension:
-    - t3api
+  - TYPO3 v13
+  - [t3api Extension](https://extensions.typo3.org/extension/t3api)
+
+## Development
+
+Change the application context to `Development`:
+
+```shell
+echo "web_environment:
+- TYPO3_CONTEXT=Development" > .ddev/config.local.yaml
+```
+
+### Frontend
+
+The frontend build process is based on postcss and esbuild.
+
+Run the following command on development context to start the file watcher building process:
+
+```shell
+ddev npm run watch
+```
+
+Run the following command on production context to build the frontend:
+
+```shell
+ddev npm run build
+```
 
 ## Code Quality
 
@@ -69,13 +109,17 @@ ddev composer xml:lint
 
 ## Tests
 
-- playwright
-  - frontend
-  - api
+The application uses playwright for end-to-end tests.
+
+Therefor the frontend **acceptance** and **api** tests are provided.
+
+Initial setup:
 
 ```shell
 ddev npm run test:install
 ```
+
+Run the tests:
 
 ```shell
 ddev npm run test

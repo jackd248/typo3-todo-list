@@ -10,15 +10,17 @@ additional_hostnames: []
 additional_fqdns: []
 database:
   type: mariadb
-  version: "10.11"
+  version: "11.4"
 use_dns_when_possible: true
 composer_version: "2"
 web_environment:
-- TYPO3_CONTEXT=Development/Local
+- TYPO3_CONTEXT=Development
 hooks:
   post-start:
     - exec: composer install --ignore-platform-reqs
-    - exec: if [ ! -d /var/www/html/node_modules ]; then npm ci && echo "Run npm run build."; fi
+    - exec: chmod +x /var/www/html/.ddev/load-initial-dump.sh
+    - exec: sh /var/www/html/.ddev/load-initial-dump.sh
+    - exec: if [ ! -d /var/www/html/node_modules ]; then npm ci && npm run build; fi
 
 # Key features of ddev's config.yaml:
 
