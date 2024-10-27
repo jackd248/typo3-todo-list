@@ -1,3 +1,5 @@
+import {Task} from './Task'
+
 export function setCustomElementStyles(shadowRootElement: Element): void {
     const styleSheet = document.querySelector('link[rel="stylesheet"]')
     if (!shadowRootElement || !styleSheet) {
@@ -10,8 +12,10 @@ export function setCustomElementStyles(shadowRootElement: Element): void {
     shadowRootElement?.shadowRoot?.prepend(style)
 }
 
-export function sortTasks(tasks: any[]): any[] {
-    return tasks.sort((a: any, b: any) => a.completed - b.completed)
+export function sortTasks(tasks: Task[]): Task[] {
+    return tasks.sort((a: Task, b: Task) => {
+        return Number(a.completed) - Number(b.completed);
+    })
 }
 
 export function formatDate(dateString: string) {

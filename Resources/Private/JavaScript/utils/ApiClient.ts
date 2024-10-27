@@ -1,9 +1,4 @@
-interface Task {
-    uid?: number;
-    title: string;
-    description: string;
-    completed: boolean;
-}
+import {Task} from './Task'
 
 class ApiClient {
     private apiUrl = '/_api/tasks'
