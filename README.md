@@ -100,6 +100,8 @@ ddev npm run build
 
 ## Code Quality
 
+## Backend
+
 ```shell
 ddev composer php:lint
 ddev composer php:fixer
@@ -107,11 +109,19 @@ ddev composer php:stan
 ddev composer xml:lint
 ```
 
+## Frontend
+
+```shell
+
+ddev npm run es:lint
+ddev npm run es:format
+```
+
 ## Tests
 
-The application uses playwright for end-to-end tests.
+The application uses [playwright](https://playwright.dev/) for end-to-end tests.
 
-Therefor the frontend **acceptance** and **api** tests are provided.
+Therefor several frontend **acceptance** and **api** tests are provided.
 
 Initial setup:
 

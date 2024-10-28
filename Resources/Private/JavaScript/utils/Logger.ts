@@ -1,5 +1,5 @@
 class Logger {
-    private devMode: boolean = true;
+    private devMode: boolean = true
 
     // eslint-disable-next-line
     debug(message: string, name: string, data: any = undefined) {

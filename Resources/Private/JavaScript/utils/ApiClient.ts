@@ -1,4 +1,4 @@
-import {Task} from './Task'
+import { Task } from './Task'
 
 class ApiClient {
     private apiUrl = '/_api/tasks'
@@ -24,7 +24,7 @@ class ApiClient {
             const response = await fetch(url, {
                 method,
                 headers: { 'Content-Type': 'application/json' },
-                body: body ? JSON.stringify(body) : undefined,
+                body: body ? JSON.stringify(body) : undefined
             })
             if (!response.ok) throw new Error(`Error: ${response.status}`)
             return method !== 'DELETE' ? await response.json() : null

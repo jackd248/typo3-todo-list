@@ -1,63 +1,66 @@
-<script>
-    import ApiClient from './../utils/ApiClient.ts';
-    import Logger from './../utils/Logger.ts';
-    import {sortTasks} from "../utils/Helper";
+<script lang="ts">
+    import ApiClient from './../utils/ApiClient'
+    import Logger from './../utils/Logger'
+    import { sortTasks } from '../utils/Helper'
+    import { Task } from '../utils/Task'
 
-    const classname = 'EditTask';
-    let {task = $bindable(), toast = $bindable(), tasks = $bindable(), focus = $bindable(), ...props} = $props();
+    const classname = 'EditTask'
+    interface Props {
+        task?: Task
+        toast?: string
+        tasks: Task[]
+        focus?: number | null | undefined
+        [key: string]: any
+    }
+    let { task = $bindable(), toast = $bindable(), tasks = $bindable(), focus = $bindable(), ...props }: Props = $props()
 
-    let uid = task?.uid || '';
-    let title = task?.title || '';
-    let description = task?.description || '';
-    let dueDate = task?.dueDate ? new Date(task.dueDate).toISOString().slice(0, -5) : null;
-    let completed = task?.completed || false;
+    let uid: number | null = $state(task?.uid || null)
+    let title: string = $state(task?.title || '')
+    let description: string = $state(task?.description || '')
+    let dueDate: string | null = $state(task?.dueDate ? new Date(task.dueDate).toISOString().slice(0, -5) : null)
+    let completed: boolean = $state(task?.completed || false)
 
-    async function saveTask(event) {
-        Logger.debug('Save task', classname);
+    async function saveTask(event: Event) {
+        Logger.debug('Save task', classname)
         event.preventDefault()
-        const formattedDueDate = dueDate ? new Date(dueDate).toISOString() : null;
-        const updatedTask = { uid, title, description, dueDate: formattedDueDate, completed };
+        const formattedDueDate = dueDate ? new Date(dueDate).toISOString() : null
+        const updatedTask: Task = { uid, title, description, dueDate: formattedDueDate, completed }
 
         if (task?.uid) {
-            await update(updatedTask);
+            await update(updatedTask)
         } else {
-            await create(updatedTask);
+            await create(updatedTask)
         }
     }
 
-    async function update(updatedTask) {
-        await ApiClient.updateTask(task.uid, updatedTask).then(result => {
-            toast = 'Task updated';
-            task = result;
-            tasks = tasks.map(t => t.uid === task.uid ? task : t);
-            sortTasks(tasks)
-            Logger.debug('Task updated', classname, task);
-            focus = task.uid;
-            task = null;
-        });
+    async function update(updatedTask: Task) {
+        await ApiClient.updateTask(task!.uid, updatedTask).then(result => {
+            toast = 'Task updated'
+            task = result
+            tasks = tasks.map(t => (t.uid === task!.uid ? task! : t))
+            sortTasks(tasks!)
+            Logger.debug('Task updated', classname, task)
+            focus = task!.uid
+            task = undefined
+        })
     }
 
-    async function create(newTask) {
+    async function create(newTask: Task) {
         await ApiClient.createTask(newTask).then(result => {
-            toast = 'New task created';
-            task = result;
-            tasks.push(task);
+            toast = 'New task created'
+            task = result
+            tasks.push(task!)
             sortTasks(tasks)
-            Logger.debug('New task created', classname, task);
-            focus = task.uid;
-            task = null;
-        });
+            Logger.debug('New task created', classname, task)
+            focus = task!.uid
+            task = undefined
+        })
     }
 
     function cancel() {
-        task = null
+        task = undefined
     }
 </script>
-
-<style>
-    .cancel { position: fixed; right: 1rem; top: 1rem; }
-    .right { text-align: right; }
-</style>
 
 <!-- Form to edit or create a task -->
 <form onsubmit={saveTask}>
@@ -103,3 +106,14 @@
     <i>close</i>
     <span class="tooltip left">Cancel</span>
 </button>
+
+<style>
+    .cancel {
+        position: fixed;
+        right: 1rem;
+        top: 1rem;
+    }
+    .right {
+        text-align: right;
+    }
+</style>

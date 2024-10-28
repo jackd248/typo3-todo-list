@@ -1,6 +1,7 @@
 export interface Task {
-    uid?: number;
-    title: string;
-    description: string;
-    completed: boolean;
+    uid?: number | null
+    title: string
+    description: string
+    completed: boolean
+    dueDate: string | null
 }

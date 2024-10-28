@@ -1,132 +1,75 @@
-<svelte:options customElement="app-container"/>
+<svelte:options customElement="app-container" />
 
-<script>
-    import EditTask from './EditTask.svelte';
-    import TaskList from './TaskList.svelte';
-    import {sortTasks, setCustomElementStyles} from "../utils/Helper";
-    import ApiClient from './../utils/ApiClient.ts';
-    import Logger from './../utils/Logger.ts';
+<script lang="ts">
+    import EditTask from './EditTask.svelte'
+    import TaskList from './TaskList.svelte'
+    import { sortTasks, setCustomElementStyles } from '../utils/Helper'
+    import ApiClient from './../utils/ApiClient'
+    import Logger from './../utils/Logger'
+    import { Task } from '../utils/Task'
 
-    const classname = 'App';
-    let root;
-    let task = $state(null);
-    let toast = $state(null);
-    let snackbar = $state(false);
-    let offline = $state(false);
-    let loading = $state(true);
-    let darkMode = $state(false);
-    let tasks = $state([]);
-    let focus = $state(null);
+    const classname: string = 'App'
+    let root: Element
+    let task: Task | null | object = $state(null)
+    let toast = $state(null)
+    let snackbar = $state(false)
+    let offline = $state(false)
+    let loading = $state(true)
+    let darkMode = $state(false)
+    let tasks = $state([])
+    let focus: number | null | undefined = $state(null)
 
     $effect(() => {
         if (toast) {
-            snackbar = true;
+            snackbar = true
             setTimeout(() => {
-                toast = null;
-                snackbar = false;
-            }, 3000);
+                toast = null
+                snackbar = false
+            }, 3000)
         }
 
         if (focus) {
-            const element = root.querySelector(`#task-${focus}`);
+            const element = root.querySelector(`#task-${focus}`)
             if (element) {
-                element.scrollIntoView({behavior: 'smooth'});
-
+                element.scrollIntoView({ behavior: 'smooth' })
             }
-            focus = null;
+            focus = null
         }
     })
 
     function handleNew() {
-        task = {};
+        task = {}
     }
 
-    function toggleDarkMode(event) {
-        const dark = document.body.classList.contains('dark');
-        document.body.classList.toggle('dark');
-        event.target.querySelector('i').textContent = dark ? 'dark_mode' : 'light_mode';
-        localStorage.setItem('darkMode', !dark);
+    function toggleDarkMode(event: Event) {
+        const dark = document.body.classList.contains('dark')
+        document.body.classList.toggle('dark')
+        event.target!.querySelector('i').textContent = dark ? 'dark_mode' : 'light_mode'
+        localStorage.setItem('darkMode', (!dark).toString())
     }
 
     function initialize() {
-        offline = !navigator.onLine;
-        window.addEventListener('offline', () => offline = true);
-        window.addEventListener('online', () => offline = false);
+        offline = !navigator.onLine
+        window.addEventListener('offline', () => (offline = true))
+        window.addEventListener('online', () => (offline = false))
 
-        darkMode = localStorage.getItem('darkMode') === 'true';
-        if (darkMode) document.body.classList.add('dark');
+        darkMode = localStorage.getItem('darkMode') === 'true'
+        if (darkMode) document.body.classList.add('dark')
 
         Logger.debug('Svelte App Mounted', classname)
-        setCustomElementStyles(document.querySelector("app-container"));
+
+        setCustomElementStyles(document.querySelector('app-container')!)
         ApiClient.getTasks().then(data => {
             tasks = 'hydra:member' in data ? data['hydra:member'] : []
             sortTasks(tasks)
             loading = false
-            Logger.debug('Tasks loaded', classname, tasks);
-            if (tasks.length === 0) handleNew();
-        });
+            Logger.debug('Tasks loaded', classname, tasks)
+            if (tasks.length === 0) handleNew()
+        })
     }
 
-    initialize();
+    initialize()
 </script>
-
-<style>
-    .add-task {
-        position: fixed;
-        right: 1rem;
-        bottom: 1rem;
-    }
-
-    .offline {
-        position: fixed;
-        left: 1rem;
-        bottom: 1rem;
-    }
-
-    .typo3 {
-        position: fixed;
-        left: 1rem;
-        top: 1rem;
-    }
-
-    .wrapper {
-        display: flex;
-        flex-direction: column;
-        min-height: 100vh; /* Stellt sicher, dass die Höhe mindestens die Höhe des sichtbaren Bereichs ist */
-    }
-
-    header, footer {
-        background: inherit;
-    }
-
-    main {
-        flex: 1;
-    }
-
-    .hidden {
-        display: none !important;
-    }
-
-    @media (max-width: 1300px) and (min-width: 600px) {
-        header .row {
-            margin-left: 5rem !important;
-        }
-
-        header .max {
-            flex: none;
-        }
-    }
-
-    @media (max-width: 600px) {
-        header {
-            margin-top: 5rem;
-        }
-
-        header .max {
-            flex: none;
-        }
-    }
-</style>
 
 <div bind:this={root} class="wrapper">
     <header>
@@ -158,7 +101,7 @@
         {/if}
 
         {#if !task}
-            <TaskList bind:tasks={tasks} bind:toast={toast} bind:task={task}/>
+            <TaskList bind:tasks bind:toast bind:task />
             <button class="circle left-round top-round extra add-task" onclick={handleNew}>
                 <i>add</i>
                 <span class="tooltip left">Add task</span>
@@ -166,14 +109,14 @@
         {/if}
 
         {#if task}
-            <EditTask bind:tasks={tasks} bind:toast={toast} bind:task={task} bind:focus={focus}/>
+            <EditTask bind:tasks bind:toast bind:task bind:focus />
         {/if}
     </main>
 
     <footer>
         <div class="padding absolute center">
-            Made with <i>keyboard</i> & <i>favorite</i> by <a href="https://konradmichalik.dev" target="_blank"
-                                                              class="link">Konrad Michalik</a>
+            Made with <i>keyboard</i> & <i>favorite</i> by
+            <a href="https://konradmichalik.dev" target="_blank" class="link">Konrad Michalik</a>
         </div>
     </footer>
 
@@ -195,3 +138,62 @@
         <div class="tooltip right">Login to TYPO3 backend</div>
     </a>
 </div>
+
+<style>
+    .add-task {
+        position: fixed;
+        right: 1rem;
+        bottom: 1rem;
+    }
+
+    .offline {
+        position: fixed;
+        left: 1rem;
+        bottom: 1rem;
+    }
+
+    .typo3 {
+        position: fixed;
+        left: 1rem;
+        top: 1rem;
+    }
+
+    .wrapper {
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh; /* Stellt sicher, dass die Höhe mindestens die Höhe des sichtbaren Bereichs ist */
+    }
+
+    header,
+    footer {
+        background: inherit;
+    }
+
+    main {
+        flex: 1;
+    }
+
+    .hidden {
+        display: none !important;
+    }
+
+    @media (max-width: 1300px) and (min-width: 600px) {
+        header .row {
+            margin-left: 5rem !important;
+        }
+
+        header .max {
+            flex: none;
+        }
+    }
+
+    @media (max-width: 600px) {
+        header {
+            margin-top: 5rem;
+        }
+
+        header .max {
+            flex: none;
+        }
+    }
+</style>
