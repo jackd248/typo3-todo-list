@@ -1,3 +1,0 @@
-plugin.tx_typo3todolist {
-	persistence.storagePid = 2
-}

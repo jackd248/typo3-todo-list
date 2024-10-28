@@ -11,7 +11,6 @@ config {
 
 [applicationContext matches "/^Development/"]
 	config {
-		no_cache = 1
 		sendCacheHeaders = 0
 		debug = 1
 		contentObjectExceptionHandler = 0

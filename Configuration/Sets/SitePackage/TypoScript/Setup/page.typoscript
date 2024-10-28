@@ -2,8 +2,6 @@ page = PAGE
 page {
 	typeNum = 0
 	shortcutIcon = EXT:typo3_todo_list/Resources/Public/Icons/Extension.svg
-
-
 	meta {
 		X-UA-Compatible = ie=edge
 		X-UA-Compatible.attribute = http-equiv
@@ -27,5 +25,6 @@ page {
 	page {
 		includeCSS.app = EXT:typo3_todo_list/Resources/Public/Css/App.css
 		includeJS.app = EXT:typo3_todo_list/Resources/Public/JavaScript/App.js
+		includeJS.app.type = module
 	}
 [GLOBAL]
