@@ -41,6 +41,17 @@ const buildConfig = {
     logLevel: 'info',
 }
 
+const swBuildConfig = {
+    entryPoints: [
+        './Resources/Private/JavaScript/ServiceWorker.ts',
+    ],
+    format: `iife`,
+    bundle: true,
+    sourcemap: true,
+    outdir: 'public',
+    logLevel: 'info',
+}
+
 if (process.argv.includes('--build')) {
     await build()
 } else {
@@ -52,10 +63,15 @@ async function build() {
     buildConfig.sourcemap = false
     buildConfig.minify = true
     buildConfig.outExtension = { '.js': '.min.js' }
+    swBuildConfig.sourcemap = false
+    swBuildConfig.minify = true
     await esbuild.build(buildConfig)
+    await esbuild.build(swBuildConfig)
 }
 
 async function watch() {
     let ctx = await esbuild.context(buildConfig)
     await ctx.watch()
+    let swCtx = await esbuild.context(swBuildConfig)
+    await swCtx.watch()
 }

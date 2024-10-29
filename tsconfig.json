@@ -11,7 +11,8 @@
 		"verbatimModuleSyntax": true,
 		"lib": [
 			"es2017",
-			"dom"
+			"dom",
+			"webworker"
 		],
 		"rootDir": "./"
 	},

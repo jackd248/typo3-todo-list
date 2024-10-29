@@ -1,30 +1,26 @@
-<script lang="ts">
-    import ApiClient from './../utils/ApiClient'
-    import Logger from './../utils/Logger'
+<script>
+    import ApiClient from './../utils/ApiClient.ts'
+    import Logger from './../utils/Logger.ts'
     import { sortTasks } from '../utils/Helper'
-    import { Task } from '../utils/Task'
 
     const classname = 'EditTask'
-    interface Props {
-        task?: Task
-        toast?: string
-        tasks: Task[]
-        focus?: number | null | undefined
-        [key: string]: any
-    }
-    let { task = $bindable(), toast = $bindable(), tasks = $bindable(), focus = $bindable(), ...props }: Props = $props()
+    let { task = $bindable(), toast = $bindable(), tasks = $bindable(), focus = $bindable(), ...props } = $props()
 
-    let uid: number | null = $state(task?.uid || null)
-    let title: string = $state(task?.title || '')
-    let description: string = $state(task?.description || '')
-    let dueDate: string | null = $state(task?.dueDate ? new Date(task.dueDate).toISOString().slice(0, -5) : null)
-    let completed: boolean = $state(task?.completed || false)
+    let uid = task?.uid || ''
+    let title = task?.title || ''
+    let description = task?.description || ''
+    let dueDate = task?.dueDate ? new Date(task.dueDate).toISOString().slice(0, -5) : null
+    let completed = task?.completed || false
 
-    async function saveTask(event: Event) {
-        Logger.debug('Save task', classname)
+    /**
+     * Saves the task by either creating a new one or updating an existing one.
+     * @param {Event} event - The form submission event.
+     */
+    async function saveTask(event) {
         event.preventDefault()
         const formattedDueDate = dueDate ? new Date(dueDate).toISOString() : null
-        const updatedTask: Task = { uid, title, description, dueDate: formattedDueDate, completed }
+        const updatedTask = { uid, title, description, dueDate: formattedDueDate, completed }
+        Logger.debug('Save task', classname, updatedTask)
 
         if (task?.uid) {
             await update(updatedTask)
@@ -33,36 +29,44 @@
         }
     }
 
-    async function update(updatedTask: Task) {
-        await ApiClient.updateTask(task!.uid, updatedTask).then(result => {
-            toast = 'Task updated'
-            task = result
-            tasks = tasks.map(t => (t.uid === task!.uid ? task! : t))
-            sortTasks(tasks!)
-            Logger.debug('Task updated', classname, task)
-            focus = task!.uid
-            task = undefined
-        })
+    /**
+     * Updates an existing task.
+     * @param {Object} updatedTask - The updated task data.
+     */
+    async function update(updatedTask) {
+        const result = await ApiClient.updateTask(task.uid, updatedTask)
+        toast = 'Task updated'
+        task = result
+        tasks = tasks.map(t => (t.uid === task.uid ? task : t))
+        sortTasks(tasks)
+        Logger.debug('Task updated', classname, task)
+        focus = task.uid
+        task = null
     }
 
-    async function create(newTask: Task) {
-        await ApiClient.createTask(newTask).then(result => {
-            toast = 'New task created'
-            task = result
-            tasks.push(task!)
-            sortTasks(tasks)
-            Logger.debug('New task created', classname, task)
-            focus = task!.uid
-            task = undefined
-        })
+    /**
+     * Creates a new task.
+     * @param {Object} newTask - The new task data.
+     */
+    async function create(newTask) {
+        const result = await ApiClient.createTask(newTask)
+        toast = 'New task created'
+        task = result
+        tasks.push(task)
+        sortTasks(tasks)
+        Logger.debug('New task created', classname, task)
+        focus = task.uid
+        task = null
     }
 
+    /**
+     * Cancels the task editing.
+     */
     function cancel() {
-        task = undefined
+        task = null
     }
 </script>
 
-<!-- Form to edit or create a task -->
 <form onsubmit={saveTask}>
     <fieldset>
         <legend>Task</legend>
@@ -101,10 +105,9 @@
     </fieldset>
 </form>
 
-<!-- Cancel button to close the form -->
 <button class="border circle left-round bottom-round extra cancel" onclick={cancel}>
     <i>close</i>
-    <span class="tooltip left">Cancel</span>
+    <div class="tooltip left">Cancel</div>
 </button>
 
 <style>

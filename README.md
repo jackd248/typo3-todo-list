@@ -31,16 +31,16 @@ This extension provides a simple todo list application for TYPO3.
 - [x] Recognizable and cross-platform interface design
 
 #### 3. **Technical Considerations**
-- [ ] Use modern technical approaches for cross-platform reusability
-- [ ] Implement frameworks or custom designs for UI and UX
-- [ ] Use tests to ensure code quality
+- [x] Use modern technical approaches for cross-platform reusability
+- [x] Implement frameworks or custom designs for UI and UX
+- [x] Use tests to ensure code quality
 
 #### 4. **PWA (Optional)**
 - [ ] Support offline functionality (viewing, editing, and deleting tasks)
 - [ ] Option to save the application as a Progressive Web App (PWA)
 
 #### 5. **Additional Notes**
-- [ ] Focus on a user-friendly and maintainable codebase
+- [x] Focus on a user-friendly and maintainable codebase
 
 ## Install
 
@@ -60,7 +60,7 @@ ddev launch
 
 > Default credentials for TYPO3 backend:
 >
-> User: `admin`, password: `Password1!`
+> User: `admin`, Password: `Password1!`
 
 ## Technologies
 
@@ -84,7 +84,7 @@ echo "web_environment:
 
 ### Frontend
 
-The frontend build process is based on postcss and esbuild.
+The frontend build process is based on [postcss](https://postcss.org/) and [esbuild](https://esbuild.github.io/).
 
 Run the following command on development context to start the file watcher building process:
 
@@ -99,6 +99,7 @@ ddev npm run build
 ```
 
 ## Code Quality
+
 
 ## Backend
 
@@ -119,7 +120,7 @@ ddev npm run es:format
 
 ## Tests
 
-The application uses [playwright](https://playwright.dev/) for end-to-end tests.
+The application uses [playwright](https://playwright.dev/) for testing.
 
 Therefor several frontend **acceptance** and **api** tests are provided.
 
@@ -134,3 +135,13 @@ Run the tests:
 ```shell
 ddev npm run test
 ```
+
+## Outlook
+
+The following todos are open for further development:
+
+- the PWA functionality is prepared but not yet fully implemented
+  - also should have a look at the svelte service worker: https://svelte.dev/docs/kit/service-workers
+  - service worker saves the tasks in the local storage and syncs them with the server when the connection is back
+  - cache the whole app for offline usage is not implemented yet
+- make the svelte javascript fully typescript compliant

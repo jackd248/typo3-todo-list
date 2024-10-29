@@ -1,37 +1,39 @@
-<script lang="ts">
-    import { Task } from '../utils/Task'
+<script>
     import { formatDate, checkDate, sortTasks } from '../utils/Helper'
-    import ApiClient from './../utils/ApiClient'
-    import Logger from './../utils/Logger'
+    import ApiClient from './../utils/ApiClient.ts'
+    import Logger from './../utils/Logger.ts'
 
+    // Component properties
+    let { task = $bindable(), toast = $bindable(), tasks = $bindable(), ...props } = $props()
     const classname = 'TaskList'
-    interface Props {
-        task?: Task | object
-        toast?: string
-        tasks: Task[]
-        [key: string]: any
-    }
 
-    let { task = $bindable(), toast = $bindable(), tasks = $bindable(), ...props }: Props = $props()
-
-    function editTask(taskToEdit: Task) {
+    /**
+     * Sets the task to be edited.
+     * @param {Object} taskToEdit - The task to be edited.
+     */
+    function editTask(taskToEdit) {
         task = taskToEdit
     }
 
-    async function deleteTask(taskToDelete: Task) {
-        await ApiClient.deleteTask(taskToDelete!.uid).then(() => {
-            Logger.debug('Task deleted', classname, taskToDelete)
-            tasks = tasks!.filter(t => t.uid !== taskToDelete.uid)
-            toast = 'Task deleted'
-            if (tasks.length === 0) {
-                task = {}
-            }
-        })
+    /**
+     * Deletes a task.
+     * @param {Object} taskToDelete - The task to be deleted.
+     */
+    async function deleteTask(taskToDelete) {
+        await ApiClient.deleteTask(taskToDelete.uid)
+        Logger.debug('Task deleted', classname, taskToDelete)
+        tasks = tasks.filter(t => t.uid !== taskToDelete.uid)
+        toast = 'Task deleted'
+        if (tasks.length === 0) task = {}
     }
 
-    function toggleCompleted(taskToUpdate: Task) {
+    /**
+     * Toggles the completion status of a task.
+     * @param {Object} taskToUpdate - The task to be updated.
+     */
+    function toggleCompleted(taskToUpdate) {
         taskToUpdate.completed = !taskToUpdate.completed
-        ApiClient.updateTask(taskToUpdate!.uid, taskToUpdate).then(result => {
+        ApiClient.updateTask(taskToUpdate.uid, taskToUpdate).then(result => {
             Logger.debug('Task updated', classname, result)
             tasks = tasks.map(t => (t.uid === result.uid ? result : t))
             sortTasks(tasks)

@@ -1,24 +1,32 @@
 <svelte:options customElement="app-container" />
 
-<script lang="ts">
+<script>
     import EditTask from './EditTask.svelte'
     import TaskList from './TaskList.svelte'
-    import { sortTasks, setCustomElementStyles } from '../utils/Helper'
-    import ApiClient from './../utils/ApiClient'
-    import Logger from './../utils/Logger'
-    import { Task } from '../utils/Task'
+    import {
+        sortTasks,
+        setCustomElementStyles,
+        storeRequestToLocalStorage,
+        getRequestsFromLocalStorage,
+        removeFromLocalStorage
+    } from '../utils/Helper'
+    import ApiClient from './../utils/ApiClient.ts'
+    import Logger from './../utils/Logger.ts'
 
-    const classname: string = 'App'
-    let root: Element
-    let task: Task | null | object = $state(null)
-    let toast = $state(null)
-    let snackbar = $state(false)
-    let offline = $state(false)
-    let loading = $state(true)
-    let darkMode = $state(false)
-    let tasks = $state([])
-    let focus: number | null | undefined = $state(null)
+    const classname = 'App'
+    let root,
+        task = $state(null),
+        toast = $state(null),
+        snackbar = $state(false)
+    let offline = $state(false),
+        loading = $state(true),
+        darkMode = $state(false)
+    let tasks = $state([]),
+        focus = $state(null)
 
+    /**
+     * Effect to handle toast and focus changes.
+     */
     $effect(() => {
         if (toast) {
             snackbar = true
@@ -30,24 +38,41 @@
 
         if (focus) {
             const element = root.querySelector(`#task-${focus}`)
-            if (element) {
-                element.scrollIntoView({ behavior: 'smooth' })
-            }
+            if (element) element.scrollIntoView({ behavior: 'smooth' })
             focus = null
         }
     })
 
+    /**
+     * Handles the creation of a new task.
+     */
     function handleNew() {
         task = {}
     }
 
-    function toggleDarkMode(event: Event) {
+    /**
+     * Toggles dark mode on and off.
+     * @param {Event} event - The event triggered by the button click.
+     */
+    function toggleDarkMode(event) {
         const dark = document.body.classList.contains('dark')
         document.body.classList.toggle('dark')
-        event.target!.querySelector('i').textContent = dark ? 'dark_mode' : 'light_mode'
-        localStorage.setItem('darkMode', (!dark).toString())
+        event.target.querySelector('i').textContent = dark ? 'dark_mode' : 'light_mode'
+        localStorage.setItem('darkMode', !dark)
     }
 
+    async function fetchTasks() {
+        ApiClient.getTasks().then(data => {
+            tasks = 'hydra:member' in data ? data['hydra:member'] : []
+            sortTasks(tasks)
+            Logger.debug('Tasks loaded', classname, tasks)
+            if (tasks.length === 0) handleNew()
+        })
+    }
+
+    /**
+     * Initializes the application.
+     */
     function initialize() {
         offline = !navigator.onLine
         window.addEventListener('offline', () => (offline = true))
@@ -56,19 +81,67 @@
         darkMode = localStorage.getItem('darkMode') === 'true'
         if (darkMode) document.body.classList.add('dark')
 
-        Logger.debug('Svelte App Mounted', classname)
-
-        setCustomElementStyles(document.querySelector('app-container')!)
-        ApiClient.getTasks().then(data => {
-            tasks = 'hydra:member' in data ? data['hydra:member'] : []
-            sortTasks(tasks)
+        Logger.debug('Svelte App initialized', classname)
+        setCustomElementStyles(document.querySelector('app-container'))
+        fetchTasks().then(() => {
             loading = false
-            Logger.debug('Tasks loaded', classname, tasks)
-            if (tasks.length === 0) handleNew()
         })
     }
 
-    initialize()
+    /**
+     * Registers the service worker and background sync.
+     * https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API/Using_Service_Workers
+     */
+    async function registerServiceWorker() {
+        if ('serviceWorker' in navigator && 'SyncManager' in window) {
+            try {
+                const registration = await navigator.serviceWorker.register('/ServiceWorker.js', {
+                    scope: '/'
+                })
+                Logger.debug('Service Worker registered', classname, registration)
+
+                await registration.sync.register('sync-requests')
+                Logger.debug('Background Sync registered', classname)
+            } catch (error) {
+                console.error('Error registering Service Worker or Background Sync:', error)
+            }
+
+            /**
+             * Listen for messages from the service worker to access the local storage for request handling.
+             */
+            navigator.serviceWorker.addEventListener('message', event => {
+                if (event.data.action === 'storeRequest') {
+                    Logger.debug('Store request:', classname, event.data.request)
+                    storeRequestToLocalStorage(event.data.request)
+                }
+                if (event.data.action === 'getRequests') {
+                    Logger.debug('Get request message from service worker', classname)
+                    const requests = getRequestsFromLocalStorage()
+                    for (const request of requests) {
+                        Logger.debug('Send stored request to service worker', classname, request)
+                        navigator.serviceWorker.controller.postMessage({
+                            action: 'fetchRequest',
+                            request
+                        })
+                    }
+                }
+                if (event.data.action === 'requestProcessed') {
+                    const request = event.data.request
+                    Logger.debug('Remove request', classname, request)
+                    removeFromLocalStorage(request)
+                    fetchTasks().then(() => {
+                        loading = false
+                    })
+                }
+            })
+        } else {
+            console.warn('Service Worker or Background Sync is not supported in this browser.')
+        }
+    }
+
+    registerServiceWorker().then(() => {
+        initialize()
+    })
 </script>
 
 <div bind:this={root} class="wrapper">
@@ -95,7 +168,7 @@
             <div class="center-align">
                 <button class="border" onclick={handleNew}>
                     <i>add</i>
-                    <span>Create a task</span>
+                    <div>Create a task</div>
                 </button>
             </div>
         {/if}
@@ -104,7 +177,7 @@
             <TaskList bind:tasks bind:toast bind:task />
             <button class="circle left-round top-round extra add-task" onclick={handleNew}>
                 <i>add</i>
-                <span class="tooltip left">Add task</span>
+                <div class="tooltip left">Add task</div>
             </button>
         {/if}
 
@@ -129,7 +202,7 @@
     <div class="circle left-round top-round extra offline {offline ? '' : 'hidden'}">
         <button class="border circle right-round top-round extra">
             <i>wifi_off</i>
-            <span class="tooltip">The app is offline</span>
+            <div class="tooltip">The app is offline</div>
         </button>
     </div>
 
@@ -144,24 +217,27 @@
         position: fixed;
         right: 1rem;
         bottom: 1rem;
+        z-index: 100;
     }
 
     .offline {
         position: fixed;
         left: 1rem;
         bottom: 1rem;
+        z-index: 100;
     }
 
     .typo3 {
         position: fixed;
         left: 1rem;
         top: 1rem;
+        z-index: 100;
     }
 
     .wrapper {
         display: flex;
         flex-direction: column;
-        min-height: 100vh; /* Stellt sicher, dass die Höhe mindestens die Höhe des sichtbaren Bereichs ist */
+        min-height: 100vh;
     }
 
     header,

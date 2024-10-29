@@ -8,9 +8,13 @@ test('has title', async ({page}) => {
 
 test('can create a task', async ({page}) => {
     await page.goto('/');
-    const addButton = page.locator('button.add-task');
-    if (await addButton.isVisible()) {
-        await addButton.click();
+
+    /* this is needed, because of the js redirect, if no tasks are available */
+    await page.waitForTimeout(500);
+
+    const createButtonIsVisible = await page.locator('button[type="submit"]').count();
+    if (createButtonIsVisible === 0) {
+        await page.locator('button.add-task').click();
     }
     await expect(page.locator('button[type="submit"]')).toHaveText(/Create/);
 
@@ -26,7 +30,8 @@ test('can create a task', async ({page}) => {
 
 test('can list all tasks', async ({page}) => {
     await page.goto('/');
-    await expect(await page.locator(".task-item").count()).toBeGreaterThan(0);
+    await expect(page.locator('div.task-item').first()).toBeInViewport();
+    await expect(await page.locator("div.task-item").count()).toBeGreaterThan(0);
 });
 
 test('can edit a task', async ({page}) => {
