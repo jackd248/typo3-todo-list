@@ -1,6 +1,5 @@
 .idea
 config/system
-composer.lock
 public
 !Resources/Public
 Resources/Public/JavaScript
