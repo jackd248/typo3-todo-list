@@ -12,6 +12,17 @@ This extension provides a simple todo list application for TYPO3.
 
 ![Preview](./Documentation/Preview.png)
 
+- [Task](#task)
+- [Install](#install)
+- [Technologies](#technologies)
+- [Development](#development)
+    * [Frontend](#frontend)
+- [Code Quality](#code-quality)
+    * [Frontend](#frontend-1)
+    * [Backend](#backend)
+- [Tests](#tests)
+- [Outlook](#outlook)
+
 ## Task
 
 #### 1. **Core Features**
@@ -75,11 +86,13 @@ The application uses the following basis technologies:
 
 ## Development
 
-Change the application context to `Development`:
+Change the application context to `Development` and restart the ddev container:
 
 ```shell
 echo "web_environment:
 - TYPO3_CONTEXT=Development" > .ddev/config.local.yaml
+
+ddev restart
 ```
 
 ### Frontend
@@ -98,24 +111,24 @@ Run the following command on production context to build the frontend:
 ddev npm run build
 ```
 
+Change the devMode in [Logger.ts](Resources/Private/JavaScript/utils/Logger.ts) to `true` to enable extending browser console logs.
+
 ## Code Quality
 
+### Frontend
 
-## Backend
+```shell
+ddev npm run es:lint
+ddev npm run es:format
+```
+
+### Backend
 
 ```shell
 ddev composer php:lint
 ddev composer php:fixer
 ddev composer php:stan
 ddev composer xml:lint
-```
-
-## Frontend
-
-```shell
-
-ddev npm run es:lint
-ddev npm run es:format
 ```
 
 ## Tests
@@ -138,7 +151,7 @@ ddev npm run test
 
 ## Outlook
 
-The following todos are open for further development:
+The following *todos* are open for further development:
 
 - the PWA functionality is prepared but not yet fully implemented
   - also should have a look at the svelte service worker: https://svelte.dev/docs/kit/service-workers

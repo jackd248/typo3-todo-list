@@ -2,7 +2,7 @@
  * Logger class for debugging messages.
  */
 class Logger {
-    private devMode = true
+    private devMode = false
 
     /**
      * Logs a debug message if devMode is enabled.

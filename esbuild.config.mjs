@@ -34,7 +34,7 @@ const buildConfig = {
                     return false
                 }
             }
-        }),
+        })
     ],
 
     outdir: 'Resources/Public/JavaScript/',
