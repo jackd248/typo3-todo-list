@@ -8,9 +8,11 @@
 
 </div>
 
-This extension provides a simple todo list application for TYPO3.
+> This extension provides a simple todo list application for TYPO3.
 
 ![Preview](./Documentation/Preview.png)
+
+## Content
 
 - [Task](#task)
 - [Install](#install)
@@ -153,8 +155,12 @@ ddev npm run test
 
 The following *todos* are open for further development:
 
-- the PWA functionality is prepared but not yet fully implemented
+- the PWA functionality is prepared, but not yet fully implemented
   - also should have a look at the svelte service worker: https://svelte.dev/docs/kit/service-workers
   - service worker saves the tasks in the local storage and syncs them with the server when the connection is back
   - cache the whole app for offline usage is not implemented yet
 - make the svelte javascript fully typescript compliant
+- usability improvements
+  - add a confirmation dialog for deleting tasks
+  - maybe due date only for the future
+  - add a filter for the tasks
