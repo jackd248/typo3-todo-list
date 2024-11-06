@@ -13,6 +13,7 @@ database:
   version: "11.4"
 use_dns_when_possible: true
 composer_version: "2"
+webimage_extra_packages: [libxml2-utils]
 web_environment:
 - TYPO3_CONTEXT=Production
 - TYPO3_INSTALL_DB_DRIVER=mysqli
